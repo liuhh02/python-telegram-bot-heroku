@@ -2,7 +2,7 @@
 # python-telegram-bot-heroku
 A guide to hosting a telegram bot created using the python-telegram-bot library with heroku.
 ![Deploy your Ember project to Heroku from Github - Philip Mutua ...](https://miro.medium.com/max/3600/1*fIjRtO5P8zc3pjs0E5hYkw.png)
-See the full article explaining the steps here. 
+See the full article explaining the steps [here](https://towardsdatascience.com/how-to-deploy-a-telegram-bot-using-heroku-for-free-9436f89575d2). 
 
 ## Getting Started
 Before you begin, you will need a Telegram bot API token from [BotFather](https://t.me/botfather). 
