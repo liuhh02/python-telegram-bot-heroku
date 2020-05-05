@@ -42,3 +42,11 @@ In particular, it will say that a Python app is detected and it will install the
 9. Go to your conversation with your Telegram bot on Telegram and type /start. The bot should be working now!
 
 Since you are using the free plan on heroku, the bot will sleep after 30 minutes of inactivity. So do expect the bot to take a few seconds to respond to your /start if you are using it more than 30 minutes after it was previously used. Other than that, the bot will respond almost instantaneously~ 
+
+## What to do if your Bot stops responding
+I’ve noticed the bot stops responding after about 24 hours of inactivity (probably because we are using the free version of Heroku), so if you want to “jolt” the bot awake, one way is to make a change to one of the files (eg. changing the python3 in the procfile to python and vice versa) and then committing the changes with the lines below:
+> git add .   
+> git commit -m "changing python3 to python in Procfile"   
+> git push heroku master
+
+You should see again see the messages about a Python app being detected and once it finishes executing, your bot should revive now!
