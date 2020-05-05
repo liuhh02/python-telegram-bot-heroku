@@ -1,4 +1,5 @@
 
+
 # python-telegram-bot-heroku
 A guide to hosting a telegram bot created using the python-telegram-bot library with heroku.
 ![Deploy your Ember project to Heroku from Github - Philip Mutua ...](https://miro.medium.com/max/3600/1*fIjRtO5P8zc3pjs0E5hYkw.png)
@@ -30,8 +31,13 @@ to create your new webapp. Heroku will assign your webapp a name as well as the 
 
 > git init   
 > git add .   
-> git commit -m "first commit"   
+> git commit -m "first commit"
+
+> heroku git:remote -a YourAppName
+
 > git push heroku master
+
+(Make sure to replace YourAppName with the name of your Heroku webapp)
 
 You should then see the following messages:
 
@@ -44,7 +50,7 @@ In particular, it will say that a Python app is detected and it will install the
 Since you are using the free plan on heroku, the bot will sleep after 30 minutes of inactivity. So do expect the bot to take a few seconds to respond to your /start if you are using it more than 30 minutes after it was previously used. Other than that, the bot will respond almost instantaneously~ 
 
 ## What to do if your Bot stops responding
-I’ve noticed the bot stops responding after about 24 hours of inactivity (probably because we are using the free version of Heroku), so if you want to “jolt” the bot awake, one way is to make a change to one of the files (eg. changing the python3 in the procfile to python and vice versa) and then committing the changes with the lines below:
+I’ve noticed the bot stops responding after about 24 hours of inactivity (because we are using the free version of Heroku), so if you want to “jolt” the bot awake, one way is to make a change to one of the files (eg. changing the python3 in the procfile to python and vice versa) and then committing the changes with the lines below:
 > git add .   
 > git commit -m "changing python3 to python in Procfile"   
 > git push heroku master
