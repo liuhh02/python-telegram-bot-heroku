@@ -10,7 +10,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 TOKEN = '1841783209:AAHrDitzlrEGtxSyCUgRr2oSl-vQsgBzPK8'
 bot = ''
-login = None
+username = None
 password = None
 user = None
 
@@ -41,13 +41,16 @@ def error(update, context):
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 def login(update):
-    global login
+    global username
     global password
     global user
-    if login == None:
-       login =  update.message.text
+    if username == None:
+       username =  update.message.text
        update.message.reply_text('Введите пароль')
-    
+    else:
+        password = update.message.text
+        user = 'User'
+        update.message.reply_text('Авторизация прошла успешно')
 
 def main():
     """Start the bot."""
