@@ -17,9 +17,6 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 TOKEN = '1841783209:AAHrDitzlrEGtxSyCUgRr2oSl-vQsgBzPK8'
 bot = ''
-username = None
-password = None
-user = None
 
 class UserTelegram:
     def __init__(self, login, password):
@@ -36,10 +33,11 @@ def start(update, context):
     """Send a message when the command /start is issued."""
     userId = update._effective_user.id
     createUserIfItNeed(userId)
-    if usersTelegram[userId].exist == False:
-        update.message.reply_text('Введите логин')
-    else:
+    isUserLog = not usersTelegram[userId].exist
+    if isUserLog:
         update.message.reply_text('Вы уже зарегистрированы!')
+    else:
+        update.message.reply_text('Введите логин')
     # sf.Contact.create({'LastName':'simple_salesforce','Email':'example@example.com'})
 
 def help(update, context):
