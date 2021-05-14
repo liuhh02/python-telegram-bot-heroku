@@ -35,7 +35,7 @@ usersTelegram = []
 def start(update, context):
     """Send a message when the command /start is issued."""
     
-    update.message.reply_text(update.update_id)
+    update.message.reply_text(update._effective_user.id)
     sf.Contact.create({'LastName':'simple_salesforce','Email':'example@example.com'})
 
 def help(update, context):
@@ -62,7 +62,7 @@ def login(update):
     global user
     if username == None:
        username =  update.message.text
-       update.message.reply_text(update.update_id)
+       update.message.reply_text(update._effective_user.id)
     else:
         password = update.message.text
         user = 'User'
