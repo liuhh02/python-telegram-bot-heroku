@@ -22,12 +22,11 @@ password = None
 user = None
 
 class UserTelegram:
-    def __init__(self, login, password, id):
+    def __init__(self, login, password):
         self.login = login
         self.password = password
-        self.id = id
 
-usersTelegram = []
+usersTelegram = {}
 
 # Define a few command handlers. These usually take the two arguments update and
 # context. Error handlers also receive the raised TelegramError object in error.
@@ -35,8 +34,11 @@ usersTelegram = []
 def start(update, context):
     """Send a message when the command /start is issued."""
     
-    update.message.reply_text('Введите логин')
-    sf.Contact.create({'LastName':'simple_salesforce','Email':'example@example.com'})
+    if update._effective_user.id not in usersTelegram:
+        update.message.reply_text('Введите логин')
+    else:
+        update.message.reply_text('Вы уже зарегистрированы!')
+    # sf.Contact.create({'LastName':'simple_salesforce','Email':'example@example.com'})
 
 def help(update, context):
     """Send a message when the command /help is issued."""
