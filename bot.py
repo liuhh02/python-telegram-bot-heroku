@@ -1,6 +1,14 @@
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from simple_salesforce import Salesforce
 import os
+
+sf = Salesforce(
+username='max2433186@mindful-impala-acpsha.com', 
+password='JKlw124O2kanv5kLLf', 
+security_token='')
+contact = sf.Contact.get('0035g000003X49iAAC')
+
 PORT = int(os.environ.get('PORT', 5000))
 
 # Enable logging
@@ -20,7 +28,7 @@ user = None
 
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text('Введите логин')
+    update.message.reply_text(contact.Email)
 
 def help(update, context):
     """Send a message when the command /help is issued."""
