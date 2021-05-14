@@ -32,7 +32,7 @@ def echo(update, context):
     if user == None:
         login(update)
     else:
-        update.message.reply_text('Авторизация прошла успешно')
+        update.message.reply_text('ты не должен видеть это сообщение')
 
     #update.message.reply_text(update.message.text)
 
