@@ -47,10 +47,7 @@ def login(update):
     if login == None:
        login =  update.message.text
        update.message.reply_text('Введите пароль')
-    else:
-        password = update.message.text
-        user = 'User'
-        update.message.reply_text('Авторизация прошла успешно')
+    
 
 def main():
     """Start the bot."""
