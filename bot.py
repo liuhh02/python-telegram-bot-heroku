@@ -40,10 +40,6 @@ def start(update, context):
         update.message.reply_text('Введите логин')
     # sf.Contact.create({'LastName':'simple_salesforce','Email':'example@example.com'})
 
-def end(update, context):
-    """Send a message when the command /end is issued."""
-    update.message.reply_text('Good Bye!')
-
 def help(update, context):
     """Send a message when the command /help is issued."""
     update.message.reply_text('Help!')
@@ -51,9 +47,15 @@ def help(update, context):
 def echo(update, context):
     """Echo the user message."""
     userId = update._effective_user.id
-    createUserIfItNeed(userId)
+
+    if usersTelegram not in userId:
+        start(update,context)
+
+    message = update.message.text.lower()
     if usersTelegram[userId].exist == False:
         login(update)
+    elif message == '/bye' or message == '/end':
+        usersTelegram.pop(userId)
     else:
         update.message.reply_text('ты не должен видеть это сообщение')
 
