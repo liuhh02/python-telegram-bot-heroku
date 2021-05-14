@@ -50,6 +50,7 @@ def echo(update, context):
 
     if userId not in usersTelegram:
         start(update,context)
+        return
 
     message = update.message.text.lower()
     if usersTelegram[userId].exist == False:
