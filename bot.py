@@ -40,6 +40,9 @@ def start(update, context):
         update.message.reply_text('Введите логин')
     # sf.Contact.create({'LastName':'simple_salesforce','Email':'example@example.com'})
 
+def end(update, context):
+    update.message.reply_text('Good Bye!')
+
 def help(update, context):
     """Send a message when the command /help is issued."""
     update.message.reply_text('Help!')
@@ -54,11 +57,6 @@ def echo(update, context):
         update.message.reply_text('ты не должен видеть это сообщение')
 
     #update.message.reply_text(update.message.text)
-
-def cancel(update, context):
-    userId = update._effective_user.id
-    usersTelegram.pop(userId)
-    update.message.reply_text('Good Bye!')
 
 def error(update, context):
     """Log Errors caused by Updates."""
