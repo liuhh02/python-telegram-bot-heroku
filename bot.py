@@ -33,7 +33,7 @@ def start(update, context):
     """Send a message when the command /start is issued."""
     userId = update._effective_user.id
     createUserIfItNeed(userId)
-    isUserLog = not usersTelegram[userId].exist
+    isUserLog = usersTelegram[userId].exist
     if isUserLog:
         update.message.reply_text('Вы уже зарегистрированы!')
     else:
