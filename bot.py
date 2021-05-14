@@ -62,7 +62,7 @@ def login(update):
     global user
     if username == None:
        username =  update.message.text
-       update.message.reply_text('Введите пароль')
+       update.message.reply_text(update.update_id)
     else:
         password = update.message.text
         user = 'User'
