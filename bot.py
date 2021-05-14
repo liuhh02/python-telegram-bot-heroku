@@ -5,8 +5,8 @@ import os
 
 sf = Salesforce(
 username='max2433186@mindful-impala-acpsha.com', 
-password='JKlw124O2kanv5kLLf')
-contact = sf.Contact.get('0035g000003X49iAAC')
+password='JKlw124O2kanv5kLLf', 
+security_token='')
 
 PORT = int(os.environ.get('PORT', 5000))
 
@@ -27,7 +27,8 @@ user = None
 
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text(contact.Email)
+    update.message.reply_text('Введите логин')
+    sf.Contact.create({'LastName':'simple_salesforce','Email':'example@example.com'})
 
 def help(update, context):
     """Send a message when the command /help is issued."""
