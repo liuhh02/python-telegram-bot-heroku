@@ -35,7 +35,7 @@ usersTelegram = []
 def start(update, context):
     """Send a message when the command /start is issued."""
     
-    update.message.reply_text(update.message.from.id)
+    update.message.reply_text(update.update_id)
     sf.Contact.create({'LastName':'simple_salesforce','Email':'example@example.com'})
 
 def help(update, context):
