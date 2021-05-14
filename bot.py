@@ -25,6 +25,7 @@ class UserTelegram:
     def __init__(self, login, password):
         self.login = login
         self.password = password
+        self.exist = False
 
 usersTelegram = {}
 
@@ -33,8 +34,9 @@ usersTelegram = {}
 
 def start(update, context):
     """Send a message when the command /start is issued."""
-    
-    if update._effective_user.id not in usersTelegram:
+    userId = update._effective_user.id
+    createUserIfItNeed(userId)
+    if usersTelegram[userId].exist == False:
         update.message.reply_text('Введите логин')
     else:
         update.message.reply_text('Вы уже зарегистрированы!')
@@ -46,8 +48,9 @@ def help(update, context):
 
 def echo(update, context):
     """Echo the user message."""
-    global user
-    if user == None:
+    userId = update._effective_user.id
+    createUserIfItNeed(userId)
+    if usersTelegram[userId].exist == False:
         login(update)
     else:
         update.message.reply_text('ты не должен видеть это сообщение')
@@ -59,16 +62,20 @@ def error(update, context):
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 def login(update):
-    global username
-    global password
-    global user
-    if username == None:
-       username =  update.message.text
+    userId = update._effective_user.id
+    user = usersTelegram[userId]
+
+    if user.login == None:
+       user.login =  update.message.text
        update.message.reply_text('Введите пароль')
     else:
-        password = update.message.text
-        user = 'User'
+        user.password = update.message.text
+        user.exist = True
         update.message.reply_text('Авторизация прошла успешно')
+
+def createUserIfItNeed(userId):
+     if userId not in usersTelegram:
+        usersTelegram[userId] = UserTelegram(None,None)
 
 def main():
     """Start the bot."""
