@@ -5,8 +5,7 @@ import os
 
 sf = Salesforce(
 username='max2433186@mindful-impala-acpsha.com', 
-password='JKlw124O2kanv5kLLf', 
-security_token='')
+password='JKlw124O2kanv5kLLf')
 contact = sf.Contact.get('0035g000003X49iAAC')
 
 PORT = int(os.environ.get('PORT', 5000))
