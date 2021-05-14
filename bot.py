@@ -48,7 +48,7 @@ def echo(update, context):
     """Echo the user message."""
     userId = update._effective_user.id
 
-    if usersTelegram not in userId:
+    if userId not in usersTelegram:
         start(update,context)
 
     message = update.message.text.lower()
