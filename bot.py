@@ -9,9 +9,15 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 TOKEN = '1841783209:AAHrDitzlrEGtxSyCUgRr2oSl-vQsgBzPK8'
+bot = ''
+login = None
+password = None
+user = None
+
 
 # Define a few command handlers. These usually take the two arguments update and
 # context. Error handlers also receive the raised TelegramError object in error.
+
 def start(update, context):
     """Send a message when the command /start is issued."""
     update.message.reply_text('Hi!')
@@ -22,11 +28,29 @@ def help(update, context):
 
 def echo(update, context):
     """Echo the user message."""
-    update.message.reply_text(update.message.text)
+    global user
+    if user == None:
+        login(update)
+    else:
+        update.message.reply_text('Авторизация прошла успешно')
+
+    #update.message.reply_text(update.message.text)
 
 def error(update, context):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, context.error)
+
+def login(update):
+    global login
+    global password
+    global user
+    if login == None:
+       login =  update.message.text
+       update.message.reply_text('Введите пароль')
+    else:
+        password = update.message.text
+        user = 'User'
+        update.message.reply_text('Авторизация прошла успешно')
 
 def main():
     """Start the bot."""
@@ -34,7 +58,8 @@ def main():
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
     updater = Updater(TOKEN, use_context=True)
-
+    global bot
+    bot = updater.bot
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
 
