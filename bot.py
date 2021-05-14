@@ -21,13 +21,21 @@ username = None
 password = None
 user = None
 
+class UserTelegram:
+    def __init__(self, login, password, id):
+        self.login = login
+        self.password = password
+        self.id = id
+
+usersTelegram = []
 
 # Define a few command handlers. These usually take the two arguments update and
 # context. Error handlers also receive the raised TelegramError object in error.
 
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text('Введите логин')
+    
+    update.message.reply_text(update.message.from.id)
     sf.Contact.create({'LastName':'simple_salesforce','Email':'example@example.com'})
 
 def help(update, context):
