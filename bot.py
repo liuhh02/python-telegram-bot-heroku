@@ -55,6 +55,12 @@ def echo(update, context):
 
     #update.message.reply_text(update.message.text)
 
+def end(update, context):
+    """Send a message when the command /help is issued."""
+    userId = update._effective_user.id
+    usersTelegram.pop(userId)
+    update.message.reply_text('Good Bye!')
+
 def error(update, context):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, context.error)
