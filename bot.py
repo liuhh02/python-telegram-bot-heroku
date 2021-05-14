@@ -41,6 +41,7 @@ def start(update, context):
     # sf.Contact.create({'LastName':'simple_salesforce','Email':'example@example.com'})
 
 def end(update, context):
+    """Send a message when the command /end is issued."""
     update.message.reply_text('Good Bye!')
 
 def help(update, context):
