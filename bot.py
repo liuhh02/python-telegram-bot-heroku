@@ -55,8 +55,7 @@ def echo(update, context):
 
     #update.message.reply_text(update.message.text)
 
-def end(update, context):
-    """Send a message when the command /help is issued."""
+def cancel(update, context):
     userId = update._effective_user.id
     usersTelegram.pop(userId)
     update.message.reply_text('Good Bye!')
