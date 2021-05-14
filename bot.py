@@ -20,7 +20,7 @@ user = None
 
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text('Hi!')
+    update.message.reply_text('Введите логин')
 
 def help(update, context):
     """Send a message when the command /help is issued."""
