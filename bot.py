@@ -23,6 +23,7 @@ class UserTelegram:
         self.login = login
         self.password = password
         self.exist = False
+        self.contact = None
 
 usersTelegram = {}
 
@@ -76,7 +77,8 @@ def login(update):
     else:
         user.password = update.message.text
         user.exist = True
-        update.message.reply_text('Авторизация прошла успешно')
+        user.contact = sf.query("SELECT Id, Email FROM Contact WHERE Email = 'worker2@gmail.com'")
+        update.message.reply_text('Авторизация прошла успешно ' + contact)
 
 def createUserIfItNeed(userId):
      if userId not in usersTelegram:
