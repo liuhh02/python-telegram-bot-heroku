@@ -55,7 +55,7 @@ def echo(update, context):
 
     message = update.message.text.lower()
     if usersTelegram[userId].exist == False:
-        login(update)
+        login(update, context)
     elif message == '/bye' or message == '/end':
         usersTelegram.pop(userId)
     else:
@@ -67,7 +67,7 @@ def error(update, context):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
-def login(update):
+def login(update, context):
     userId = update._effective_user.id
     user = usersTelegram[userId]
 
@@ -76,12 +76,15 @@ def login(update):
        update.message.reply_text('Введите пароль')
     else:
         user.password = update.message.text
-        user.exist = True
         try:
-            user.contact = sf.query("SELECT Id, Email, FROM Contact WHERE Email = 'workasfaer2@gmail.com'")
+            user.contact = sf.query(f"SELECT Id, Name, Email, Office__c, Admin__c FROM Contact WHERE Email ='{user.login}' AND Password__c ='{user.password}' LIMIT 1")
+            user.exist = True
             update.message.reply_text('Авторизация прошла успешно ' + str(user.contact))
         except Exception:
             update.message.reply_text('Неправильный логин или пароль.Попробуйте Снова')
+            refreshUser(user)
+            start(update,context)
+            return
         # x = bool(user.contact)
         # if bool:
         #     update.message.reply_text('Авторизация прошла успешно ' + str(user.contact))
@@ -91,6 +94,12 @@ def login(update):
 def createUserIfItNeed(userId):
      if userId not in usersTelegram:
         usersTelegram[userId] = UserTelegram(None,None)
+
+def refreshUser(user):
+    user.login = None
+    user.password = None
+    user.exist = False
+    user.contact = None
 
 def main():
     """Start the bot."""
