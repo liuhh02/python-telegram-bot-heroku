@@ -78,6 +78,7 @@ def login(update, context):
         user.password = update.message.text
         try:
             user.contact = sf.query(f"SELECT Id, Name, Email, Office__c, Admin__c FROM Contact WHERE Email ='{user.login}' AND Password__c ='{user.password}' LIMIT 1")
+            throwExceptionIfContactEmpty(user.contact)        
             user.exist = True
             update.message.reply_text('Авторизация прошла успешно ' + str(user.contact))
         except Exception:
@@ -100,6 +101,11 @@ def refreshUser(user):
     user.password = None
     user.exist = False
     user.contact = None
+
+def throwExceptionIfContactEmpty(contact):
+    totalSize = int(contact['totalSize'])
+    if totalSize < 1:
+        raise Exception('Contact empty')
 
 def main():
     """Start the bot."""
