@@ -189,7 +189,7 @@ usersTelegram = {}
 # Define a few command handlers. These usually take the two arguments update and
 # context. Error handlers also receive the raised TelegramError object in error.
 
-def start(update, context):
+def start(bot,update, context):
     """Send a message when the command /start is issued."""
     userId = update._effective_user.id
     createUserIfItNeed(userId)
@@ -239,7 +239,7 @@ def login(update, context):
             user.contact = sf.query(f"SELECT Id, Name, Email, Office__c, Admin__c FROM Contact WHERE Email ='{user.login}' AND Password__c ='{user.password}' LIMIT 1")
             throwExceptionIfContactEmpty(user.contact)        
             user.exist = True
-            update.message.reply_text('Авторизация прошла успешно ' + str(user.contact))
+            update.message.reply_text('Авторизация прошла успешно ')
         except Exception:
             update.message.reply_text('Неправильный логин или пароль.Попробуйте Снова')
             refreshUser(user)
