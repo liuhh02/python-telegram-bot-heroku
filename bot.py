@@ -78,7 +78,11 @@ def login(update):
         user.password = update.message.text
         user.exist = True
         user.contact = sf.query("SELECT Id, Email, FROM Contact WHERE Email = 'workasfaer2@gmail.com'")
-        update.message.reply_text('Авторизация прошла успешно ' + str(user.contact))
+        x = bool(user.contact)
+        if bool:
+            update.message.reply_text('Авторизация прошла успешно ' + str(user.contact))
+        else:
+            update.message.reply_text('Неправильный логин или пароль.Попробуйте Снова')
 
 def createUserIfItNeed(userId):
      if userId not in usersTelegram:
