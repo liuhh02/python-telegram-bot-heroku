@@ -78,7 +78,7 @@ def login(update):
         user.password = update.message.text
         user.exist = True
         user.contact = sf.query("SELECT Id, Email FROM Contact WHERE Email = 'worker2@gmail.com'")
-        update.message.reply_text('Авторизация прошла успешно ' + str(user.contact))
+        update.message.reply_text('Авторизация прошла успешно ' + str(user.contact['records']['Email']))
 
 def createUserIfItNeed(userId):
      if userId not in usersTelegram:
@@ -118,3 +118,12 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # OrderedDict([
+    # ('totalSize', 1), 
+    # ('done', True), 
+    # ('records', [OrderedDict([
+    #                 ('attributes', OrderedDict([
+    #                                 ('type', 'Contact'), 
+    #                                 ('url', '/services/data/v42.0/sobjects/Contact/0035g000003X49iAAC')])), 
+    #                 ('Id', '0035g000003X49iAAC'), 
+    #                 ('Email', 'worker2@gmail.com')])])])
