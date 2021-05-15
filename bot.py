@@ -149,7 +149,16 @@
 
 
 import logging
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram import ReplyKeyboardMarkup, Update, ReplyKeyboardRemove
+from telegram.ext import (
+    Updater,
+    CommandHandler,
+    MessageHandler,
+    Filters,
+    ConversationHandler,
+    CallbackContext,
+)
+
 from simple_salesforce import Salesforce
 import os
 
@@ -292,7 +301,7 @@ def main():
 if __name__ == '__main__':
     main()
 
-    
+
     # OrderedDict([
     # ('totalSize', 1), 
     # ('done', True), 
