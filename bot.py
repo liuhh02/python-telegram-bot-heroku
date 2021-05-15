@@ -189,8 +189,9 @@ usersTelegram = {}
 # Define a few command handlers. These usually take the two arguments update and
 # context. Error handlers also receive the raised TelegramError object in error.
 
-def start(bot,update, context):
+def start(update, context):
     """Send a message when the command /start is issued."""
+    
     userId = update._effective_user.id
     createUserIfItNeed(userId)
     isUserLog = usersTelegram[userId].exist
@@ -239,7 +240,9 @@ def login(update, context):
             user.contact = sf.query(f"SELECT Id, Name, Email, Office__c, Admin__c FROM Contact WHERE Email ='{user.login}' AND Password__c ='{user.password}' LIMIT 1")
             throwExceptionIfContactEmpty(user.contact)        
             user.exist = True
-            update.message.reply_text('Авторизация прошла успешно ')
+            reply_keyboard = [['Boy', 'Girl', 'Other']]
+            update.message.reply_text('Авторизация прошла успешно',
+                            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
         except Exception:
             update.message.reply_text('Неправильный логин или пароль.Попробуйте Снова')
             refreshUser(user)
@@ -250,6 +253,7 @@ def login(update, context):
         #     update.message.reply_text('Авторизация прошла успешно ' + str(user.contact))
         # else:
         #     update.message.reply_text('Неправильный логин или пароль.Попробуйте Снова')
+
 
 def createUserIfItNeed(userId):
      if userId not in usersTelegram:
@@ -272,8 +276,6 @@ def main():
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
     updater = Updater(TOKEN, use_context=True)
-    global bot
-    bot = updater.bot
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
 
