@@ -260,7 +260,7 @@ def end(update, context):
     userId = update._effective_user.id
     usersTelegram.pop(userId)
     update.message.reply_text('До свидания!',
-                            reply_markup=mainMenuKeyboard())
+                            reply_markup=ReplyKeyboardRemove())
 
 def login(update, context):
     userId = update._effective_user.id
