@@ -231,7 +231,7 @@ def echoForExistUser(update,context):
         'here should be code'
     elif message == 'отмена':
         reply_keyboard = mainMenuKeyboard()
-        update.message.reply_text(
+        update.message.reply_text('Что вы хотите сделать?',
                             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
     update.message.reply_text('ты не должен видеть это сообщение')
 
