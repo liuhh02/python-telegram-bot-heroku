@@ -106,7 +106,10 @@ def creatingCardDate(update,user,message):
     if message == 'сегодня':
         'here should be code'
     elif message == 'календарь':
-        update.message.reply_text('Выберите число',
+        now = datetime.datetime.now()
+        daysInMonth = calendar.monthrange(now.year, now.month)[1]
+        strDays = str(daysInMonth)
+        update.message.reply_text('Выберите число ' + strDays,
                             reply_markup=daysOfMonthKeyboard())
     elif message == 'отмена':
         update.message.reply_text('Что вы хотите сделать?',
