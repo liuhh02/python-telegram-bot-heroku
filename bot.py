@@ -136,6 +136,7 @@ def creatingCardDateNone(update,user,message):
 def creatingCardAmount(update,user,message):
     if user.card.amount == None:
         update.message.reply_text('Введите сумму')
+        user.card.amount = True
     elif user.card.amount == True:
         try:
             cardAmount = float(message)
