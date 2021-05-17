@@ -161,8 +161,8 @@ def creatingCardDate(update,user,message):
 
 def creatingCardDateNone(update,user,message):
     if message == 'сегодня':
-        'here should be code'
-        user.card.date = True
+        user.card.date = datetime.datetime.now()
+        creatingCardAmount(update,user,message)
     elif message == 'календарь':
         update.message.reply_text('Выберите число')
         replyMessage = """Или Введите дату вручную(день-месяц-число)
