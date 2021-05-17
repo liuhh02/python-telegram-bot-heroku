@@ -214,6 +214,7 @@ def createCardInSalesforce(update,user):
         update.message.reply_text('Карточка успешно создана!', reply_markup=mainMenuKeyboard())
     except Exception as e:
         update.message.reply_text('Извините, карточку не получилось создать', reply_markup=mainMenuKeyboard())
+        update.message.reply_text(str(e))
 
 def cancelToMainMenu(update,user):
     user.card = None
