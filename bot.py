@@ -16,6 +16,7 @@ from telegram.ext import (
 from simple_salesforce import Salesforce
 import os
 
+#####################################Data#####################################
 sf = Salesforce(
 username='max2433186@mindful-impala-acpsha.com', 
 password='JKlw124O2kanv5kLLf', 
@@ -50,9 +51,10 @@ class Card:
 
 usersTelegram = {}
 
-# Define a few command handlers. These usually take the two arguments update and
-# context. Error handlers also receive the raised TelegramError object in error.
 
+#######################################Functions###########################################
+
+######################################Handlers##############################################
 def start(update, context):
     """Send a message when the command /start is issued."""
     
@@ -79,6 +81,41 @@ def echo(update, context):
         echoForExistUser(update,context)
 
     #update.message.reply_text(update.message.text)
+
+def end(update, context):
+    userId = update._effective_user.id
+    usersTelegram.pop(userId)
+    update.message.reply_text('До свидания!',
+                            reply_markup=ReplyKeyboardRemove())
+
+def error(update, context):
+    """Log Errors caused by Updates."""
+    logger.warning('Update "%s" caused error "%s"', update, context.error)
+
+######################################Handlers##############################################
+
+######################################Helper handlers##############################################
+
+def login(update, context):
+    userId = update._effective_user.id
+    user = usersTelegram[userId]
+
+    if user.login == None:
+       user.login =  update.message.text
+       update.message.reply_text('Введите пароль')
+    else:
+        user.password = update.message.text
+        try:
+            user.contact = sf.query(f"SELECT Id, Name, Email, Office__c, Admin__c FROM Contact WHERE Email ='{user.login}' AND Password__c ='{user.password}' LIMIT 1")
+            throwExceptionIfContactEmpty(user.contact)        
+            user.exist = True
+            update.message.reply_text('Авторизация прошла успешно ',
+                            reply_markup=mainMenuKeyboard())
+        except Exception:
+            update.message.reply_text('Неправильный логин или пароль.Попробуйте Снова')
+            refreshUser(user)
+            start(update,context)
+            return
 
 def echoForExistUser(update,context):
     message = update.message.text.lower()
@@ -173,63 +210,19 @@ def confirmCreateCard(update,user,message):
 def createCardInSalesforce(update,user):
     try:
         something = sf.Expense_Card__c.create({'CardDate__c': str(user.card.date)[:-9],'Amount__c':str(user.card.amount),'Description__c':user.card.description,'CardKeeper__c':user.card.keeper})
-        update.message.reply_text('Карточка успешно создана!' + str(something))
+        user.card = None
+        update.message.reply_text('Карточка успешно создана!', reply_markup=mainMenuKeyboard())
     except Exception as e:
-        update.message.reply_text('Извините, карточку не получилось создать' + str(e))
-
-def getDateFromString(update,message):
-    dateStr = ''
-    if len(message) < 3:
-        now = datetime.datetime.now()
-        dateStr = str(now.year)+'-'+str(now.month)+'-'+message + ' 00:00:00'
-    else:
-        dateStr = message + ' 00:00:00'
-    
-    dateObject = datetime.datetime.strptime(dateStr, '%Y-%m-%d %H:%M:%S')
-    return dateObject
-
-
-def error(update, context):
-    """Log Errors caused by Updates."""
-    logger.warning('Update "%s" caused error "%s"', update, context.error)
-
-def end(update, context):
-    userId = update._effective_user.id
-    usersTelegram.pop(userId)
-    update.message.reply_text('До свидания!',
-                            reply_markup=ReplyKeyboardRemove())
-
-def login(update, context):
-    userId = update._effective_user.id
-    user = usersTelegram[userId]
-
-    if user.login == None:
-       user.login =  update.message.text
-       update.message.reply_text('Введите пароль')
-    else:
-        user.password = update.message.text
-        try:
-            user.contact = sf.query(f"SELECT Id, Name, Email, Office__c, Admin__c FROM Contact WHERE Email ='{user.login}' AND Password__c ='{user.password}' LIMIT 1")
-            throwExceptionIfContactEmpty(user.contact)        
-            user.exist = True
-            update.message.reply_text('Авторизация прошла успешно ',
-                            reply_markup=mainMenuKeyboard())
-        except Exception:
-            update.message.reply_text('Неправильный логин или пароль.Попробуйте Снова')
-            refreshUser(user)
-            start(update,context)
-            return
-        #str(user.contact['records'][0]['Id'])
-        # x = bool(user.contact)
-        # if bool:
-        #     update.message.reply_text('Авторизация прошла успешно ' + str(user.contact))
-        # else:
-        #     update.message.reply_text('Неправильный логин или пароль.Попробуйте Снова')
+        update.message.reply_text('Извините, карточку не получилось создать', reply_markup=mainMenuKeyboard())
 
 def cancelToMainMenu(update,user):
     user.card = None
     update.message.reply_text('Что вы хотите сделать?',
                             reply_markup=mainMenuKeyboard())
+
+######################################Helper handlers##############################################
+
+
 #########################Keyboards############################
 def mainMenuKeyboard():
     options = [['Текущий баланс'],['Создать карточку']]
@@ -253,6 +246,7 @@ def confirmKeyboard():
 
 #########################Keyboards############################
 
+#########################Utils############################
 def getOptionsForDaysOfMonthKeyboard():
     options = []
     rowOptions = []
@@ -267,19 +261,20 @@ def getOptionsForDaysOfMonthKeyboard():
             rowOptions = []
         else: 
             rowOptions.append(strCount)
-        # if (count == daysInMonth):
-        #     lenOptions = len(options)
-        #     options[lenOptions].append(strCount)
-        # elif (len(rowOptions) >= 4):
-        #     rowOptions.append(strCount)
-        #     options.append(rowOptions)
-        #     rowOptions = []
-        # else:
-        #     rowOptions.append(strCount)
+
         count += 1
     return options
 
-
+def getDateFromString(update,message):
+    dateStr = ''
+    if len(message) < 3:
+        now = datetime.datetime.now()
+        dateStr = str(now.year)+'-'+str(now.month)+'-'+message + ' 00:00:00'
+    else:
+        dateStr = message + ' 00:00:00'
+    
+    dateObject = datetime.datetime.strptime(dateStr, '%Y-%m-%d %H:%M:%S')
+    return dateObject
 
 def createUserIfItNeed(userId):
      if userId not in usersTelegram:
@@ -295,6 +290,8 @@ def throwExceptionIfContactEmpty(contact):
     totalSize = int(contact['totalSize'])
     if totalSize < 1:
         raise Exception('Contact empty')
+
+#########################Utils############################
 
 def main():
     """Start the bot."""
@@ -328,22 +325,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-    # OrderedDict([
-    # ('totalSize', 1), 
-    # ('done', True), 
-    # ('records', [OrderedDict([
-    #                 ('attributes', OrderedDict([
-    #                                 ('type', 'Contact'), 
-    #                                 ('url', '/services/data/v42.0/sobjects/Contact/0035g000003X49iAAC')])), 
-    #                 ('Id', '0035g000003X49iAAC'), 
-    #                 ('Email', 'worker2@gmail.com')])])])
-
-    #  OrderedDict([
-    #      ('attributes', OrderedDict([
-    #          ('type', 'Contact'), 
-    #          ('url', '/services/data/v42.0/sobjects/Contact/0035g000003X49iAAC')])), 
-    #      ('Id', '0035g000003X49iAAC'), 
-    #      ('Email', 'worker2@gmail.com')])
-
