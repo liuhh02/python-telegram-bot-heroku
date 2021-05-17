@@ -163,7 +163,7 @@ def creatingCardDateNone(update,user,message):
     if message == 'сегодня':
         try:
             today = datetime.datetime.today()
-            user.card.date = getStringAsDateAndValidate(today.day)
+            user.card.date = getStringAsDateAndValidate(str(today.day))
             creatingCardAmount(update,user,message)
         except Exception as e:
             update.message.reply_text(str(e))
