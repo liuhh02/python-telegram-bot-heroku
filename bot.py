@@ -134,8 +134,6 @@ def echoForExistUser(update,context):
         cancelToMainMenu(update,user)
     elif user.card != None:
         creatingCard(update,user,message)
-    
-    update.message.reply_text('ты не должен видеть это сообщение')
 
 def creatingCard(update,user,message):
     if user.card.date == None or user.card.date == True:
