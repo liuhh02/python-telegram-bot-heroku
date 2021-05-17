@@ -274,9 +274,9 @@ def getStringAsDateAndValidate(message):
     dateStrResult = ''
     if len(message) < 3:
         now = datetime.datetime.now()
-        dateStr = str(now.year)+'-'+str(now.month)+'-'+message
+        dateStrResult = str(now.year)+'-'+str(now.month)+'-'+message
     else:
-        dateStr = message
+        dateStrResult = message
     
     dateStrForValidate = dateStrResult + ' 00:00:00'
     dateObject = datetime.datetime.strptime(dateStrForValidate, '%Y-%m-%d %H:%M:%S')
