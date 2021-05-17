@@ -225,6 +225,14 @@ def echoForExistUser(update,context):
         reply_keyboard = createCardKeyboard()
         update.message.reply_text('На какой день желаете создать карточку?',
                             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+    elif message == 'сегодня':
+        'here should be code'
+    elif message == 'календарь':
+        'here should be code'
+    elif message == 'отмена':
+        reply_keyboard = mainMenuKeyboard()
+        update.message.reply_text('',
+                            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
     update.message.reply_text('ты не должен видеть это сообщение')
 
 def error(update, context):
