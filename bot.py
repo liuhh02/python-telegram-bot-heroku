@@ -124,7 +124,7 @@ def echoForExistUser(update,context):
     userContactId = user.contact['records'][0]['Id']
     if message == 'текущий баланс':
         balance = sf.apexecute('Contact/'+userContactId, method='GET')
-        update.message.reply_text(str(balance),
+        update.message.reply_text(str(balance)+'$',
                             reply_markup=mainMenuKeyboard())
     elif message == 'создать карточку':
         user.card = Card(userContactId)
@@ -199,7 +199,7 @@ def confirmCreateCard(update,user,message):
     if user.card.confirmCreate == None:
         update.message.reply_text('Вы уверены что хотите создать следующую карточку?')
         update.message.reply_text('Дата: ' + str(user.card.date))
-        update.message.reply_text('Сумма: ' + str(user.card.amount))
+        update.message.reply_text('Сумма: ' + str(user.card.amount)+'$')
         update.message.reply_text('Описание: ' + user.card.description, reply_markup=confirmKeyboard())
         user.card.confirmCreate = True
     elif user.card.confirmCreate == True:
