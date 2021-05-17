@@ -140,8 +140,8 @@ def getDateFromString(update,message):
             dateObject = datetime.strptime(dateStr, '%Y-%m-%d').date()
             update.message.reply_text(str(dateObject),
                                 reply_markup=ReplyKeyboardRemove())
-    except Exception:
-        update.message.reply_text(str(Exception))
+    except Exception as e:
+        update.message.reply_text(str(e))
 
 def error(update, context):
     """Log Errors caused by Updates."""
