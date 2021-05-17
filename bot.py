@@ -95,6 +95,7 @@ def echoForExistUser(update,context):
     update.message.reply_text('ты не должен видеть это сообщение')
 
 def creatingCard(update,user,message):
+    update.message.reply_text('creatingCard')
     if user.card.date == None or user.card.date == True:
         creatingCardDate(update,user,message)
     elif user.card.amount == None or user.card.amount == True:
@@ -103,10 +104,11 @@ def creatingCard(update,user,message):
         creatingCardDecription(update,user,message)
 
 def creatingCardDate(update,user,message):
+    update.message.reply_text('creatingCardDate')
     if user.card.date == None:
         creatingCardDateNone(update,user,message)
     elif user.card.date == True:
-        update.message.reply_text('hello')
+        update.message.reply_text('True')
         getDateFromString(update,message)
 
 def creatingCardDateNone(update,user,message):
