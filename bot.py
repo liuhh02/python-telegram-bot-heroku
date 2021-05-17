@@ -95,7 +95,6 @@ def echoForExistUser(update,context):
     update.message.reply_text('ты не должен видеть это сообщение')
 
 def creatingCard(update,user,message):
-    update.message.reply_text('creatingCard')
     if user.card.date == None or user.card.date == True:
         creatingCardDate(update,user,message)
     elif user.card.amount == None or user.card.amount == True:
@@ -104,11 +103,9 @@ def creatingCard(update,user,message):
         creatingCardDecription(update,user,message)
 
 def creatingCardDate(update,user,message):
-    update.message.reply_text('creatingCardDate ' + str(user.card.date))
     if user.card.date == None:
         creatingCardDateNone(update,user,message)
     elif user.card.date == True:
-        update.message.reply_text('True')
         getDateFromString(update,message)
 
 def creatingCardDateNone(update,user,message):
@@ -134,11 +131,15 @@ def creatingCardDecription(update,user,message):
 
 def getDateFromString(update,message):
     try:
+        dateStr = ''
         if len(message) < 3:
             now = datetime.datetime.now()
-            # dateStr = str(now.year)+'-'+str(now.month)+'-'+message
-            # dateObject = datetime.strptime(dateStr, '%Y-%m-%d').date()
             dateStr = str(now.year)+'-'+str(now.month)+'-'+message + ' 00:00:00'
+            dateObject = datetime.datetime.strptime(dateStr, '%Y-%m-%d %H:%M:%S')
+            update.message.reply_text(str(dateObject),
+                                reply_markup=ReplyKeyboardRemove())
+        else:
+            dateStr = message
             dateObject = datetime.datetime.strptime(dateStr, '%Y-%m-%d %H:%M:%S')
             update.message.reply_text(str(dateObject),
                                 reply_markup=ReplyKeyboardRemove())
