@@ -134,9 +134,9 @@ def creatingCardDateNone(update,user,message):
         user.card.date = True
 
 def creatingCardAmount(update,user,message):
-    if user.card.date == None:
+    if user.card.amount == None:
         update.message.reply_text('Введите сумму')
-    elif user.card.date == True:
+    elif user.card.amount == True:
         try:
             cardAmount = float(message)
             update.message.reply_text(cardAmount)
@@ -146,9 +146,9 @@ def creatingCardAmount(update,user,message):
                     reply_markup=cancelKeyboard())
 
 def creatingCardDecription(update,user,message):
-    if user.card.date == None:
+    if user.card.description == None:
         update.message.reply_text('Введите описание')
-    elif user.card.date == True:
+    elif user.card.description == True:
         user.card.description = message
 
 def getDateFromString(update,message):
