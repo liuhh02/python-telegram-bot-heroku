@@ -1,6 +1,8 @@
 import logging
 import calendar
 import datetime
+
+from requests.api import options
 from telegram import ReplyKeyboardMarkup, Update, ReplyKeyboardRemove
 from telegram.ext import (
     Updater,
@@ -89,6 +91,8 @@ def echoForExistUser(update,context):
         user.card = Card()
         update.message.reply_text('На какой день желаете создать карточку?',
                             reply_markup=createCardKeyboard())
+    elif message == 'отмена':
+        cancelToMainMenu(update,user)
     elif user.card != None:
         creatingCard(update,user,message)
     
@@ -110,7 +114,8 @@ def creatingCardDate(update,user,message):
             cardDate = getDateFromString(update,message)
             user.card.date = cardDate
         except Exception as e:
-            update.message.reply_text('Кажется вы неправильно ввели дату. Попробуйте еще раз или обратитесь к администратору. Пример: 2021-03-31')
+            update.message.reply_text('Кажется вы неправильно ввели дату. Попробуйте еще раз или обратитесь к администратору. Пример: 2021-03-31',
+                                reply_markup=cancelKeyboard())
             #update.message.reply_text(str(e))
 
 def creatingCardDateNone(update,user,message):
@@ -126,10 +131,6 @@ def creatingCardDateNone(update,user,message):
         update.message.reply_text(replyMessage,
                             reply_markup=daysOfMonthKeyboard())
         user.card.date = True
-    elif message == 'отмена':
-        user.card = None
-        update.message.reply_text('Что вы хотите сделать?',
-                            reply_markup=mainMenuKeyboard())
 
 def creatingCardAmount(update,user,message):
     ''
@@ -185,10 +186,18 @@ def login(update, context):
         # else:
         #     update.message.reply_text('Неправильный логин или пароль.Попробуйте Снова')
 
+def cancelToMainMenu(update,user):
+    user.card = None
+    update.message.reply_text('Что вы хотите сделать?',
+                            reply_markup=mainMenuKeyboard())
 #########################Keyboards############################
 def mainMenuKeyboard():
     options = [['Текущий баланс'],['Создать карточку']]
     return ReplyKeyboardMarkup(options)
+
+def cancelKeyboard():
+    options = [['Отмена'],[]]
+    return ReplyKeyboardMarkup(options, one_time_keyboard=True)
 
 def createCardKeyboard():
     options = [['Сегодня'],['Календарь'],['Отмена']]
