@@ -246,7 +246,8 @@ def creatingCard(update, context):
     elif message == 'календарь':
         'here should be code'
     elif message == 'отмена':
-        update.message.reply_markup(mainMenuKeyboard())
+        update.message.reply_text('Что вы хотите сделать?',
+                            reply_markup=mainMenuKeyboard())
 
 def error(update, context):
     """Log Errors caused by Updates."""
@@ -285,7 +286,7 @@ def login(update, context):
 #########################Keyboards############################
 def mainMenuKeyboard():
     options = [['Текущий баланс', 'Создать карточку']]
-    return ReplyKeyboardMarkup(options, one_time_keyboard=True)
+    return ReplyKeyboardMarkup(options)
 
 def createCardKeyboard():
     options = [['Сегодня','Календарь','Отмена']]
