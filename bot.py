@@ -106,11 +106,8 @@ def creatingCardDate(update,user,message):
     if message == 'сегодня':
         'here should be code'
     elif message == 'календарь':
-        now = datetime.datetime.now()
-        daysInMonth = calendar.monthrange(now.year, now.month)[1]
-        strDays = str(daysInMonth)
-        replyMessage = """Выберите число 
-или  Введите дату вручную(день-месяц-число)
+        update.message.reply_text('Выберите число')
+        replyMessage = """Или Введите дату вручную(день-месяц-число)
 Пример:
 2021-03-31
         """
