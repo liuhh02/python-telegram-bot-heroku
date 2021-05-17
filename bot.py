@@ -221,6 +221,10 @@ def echoForExistUser(update,context):
     if message == 'текущий баланс':
         'here should be code'
         update.message.reply_text('101')
+    elif message == 'создать карточку':
+        reply_keyboard = createCardKeyboard()
+        update.message.reply_text('На какой день желаете создать карточку?',
+                            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
     update.message.reply_text('ты не должен видеть это сообщение')
 
 def error(update, context):
