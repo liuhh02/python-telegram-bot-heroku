@@ -182,7 +182,7 @@ def getDateFromString(update,message):
         dateStr = message + ' 00:00:00'
     
     dateObject = datetime.datetime.strptime(dateStr, '%Y-%m-%d %H:%M:%S')
-    return dateObject.date
+    return dateObject
 
 
 def error(update, context):
