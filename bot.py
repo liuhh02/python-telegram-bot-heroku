@@ -114,7 +114,7 @@ def creatingCardDate(update,user,message):
         Пример:
         2021-03-31
         """
-        update.message.reply_text('Выберите число \n или  Введите дату вручную(день-месяц-число)\n Пример:\n' + strDays,
+        update.message.reply_text(replyMessage,
                             reply_markup=daysOfMonthKeyboard())
     elif message == 'отмена':
         update.message.reply_text('Что вы хотите сделать?',
