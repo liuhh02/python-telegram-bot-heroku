@@ -138,9 +138,9 @@ def getDateFromString(update,message):
             now = datetime.datetime.now()
             # dateStr = str(now.year)+'-'+str(now.month)+'-'+message
             # dateObject = datetime.strptime(dateStr, '%Y-%m-%d').date()
-            date_time_str = str(now.year)+'-'+str(now.month)+'-'+message + ' 08:15:27'
-            date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
-            update.message.reply_text(str(date_time_obj),
+            dateStr = str(now.year)+'-'+str(now.month)+'-'+message + ' 00:00:00'
+            dateObject = datetime.datetime.strptime(dateStr, '%Y-%m-%d %H:%M:%S')
+            update.message.reply_text(str(dateObject),
                                 reply_markup=ReplyKeyboardRemove())
     except Exception as e:
         update.message.reply_text(str(e))
