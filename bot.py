@@ -39,12 +39,14 @@ class UserTelegram:
         self.contact = None
         self.newCard = None
 
+
 class Card:
     def __init__(self):
         self.date = None
         self.amount = None
         self.description = None
         self.keeper = None
+        self.confirmCreate = None
 
 usersTelegram = {}
 
@@ -106,6 +108,9 @@ def creatingCard(update,user,message):
     elif user.card.description == None or user.card.description == True:
         creatingCardDecription(update,user,message)
 
+    if isinstance(user.card.description,str):
+        ''
+
 def creatingCardDate(update,user,message):
     if user.card.date == None:
         creatingCardDateNone(update,user,message)
@@ -140,8 +145,8 @@ def creatingCardAmount(update,user,message):
     elif user.card.amount == True:
         try:
             cardAmount = float(message)
-            update.message.reply_text(cardAmount)
-            #user.card.amount = cardAmount
+            user.card.amount = cardAmount
+            creatingCardDecription(update,user,message)
         except Exception as e:
             update.message.reply_text('Кажется вы неправильно ввели сумму. Попробуйте еще раз или обратитесь к администратору. Пример: 5.014',
                     reply_markup=cancelKeyboard())
@@ -149,8 +154,23 @@ def creatingCardAmount(update,user,message):
 def creatingCardDecription(update,user,message):
     if user.card.description == None:
         update.message.reply_text('Введите описание')
+        user.card.description = True
     elif user.card.description == True:
-        user.card.description = message
+        user.card.description = str(message)
+
+def confirmCreateCard(update,user,message):
+    if user.card.confirmCreate == None:
+        update.message.reply_text('Вы уверены что хотите создать следующую карточку?')
+        update.message.reply_text('Дата: ' + str(user.card.date))
+        update.message.reply_text('Сумма: ' + str(user.card.amount))
+        update.message.reply_text('Описание: ' + str(user.card.description), reply_markup=confirmKeyboard())
+        user.card.confirmCreate = True
+    elif user.card.confirmCreate == True:
+        createCardInSalesforce(update,user)
+        user.card = None
+
+def createCardInSalesforce(update,user):
+    ''
 
 def getDateFromString(update,message):
     dateStr = ''
@@ -211,7 +231,7 @@ def mainMenuKeyboard():
     return ReplyKeyboardMarkup(options)
 
 def cancelKeyboard():
-    options = [['Отмена'],[]]
+    options = [['Отмена']]
     return ReplyKeyboardMarkup(options, one_time_keyboard=True)
 
 def createCardKeyboard():
@@ -221,6 +241,12 @@ def createCardKeyboard():
 def daysOfMonthKeyboard():
     options = getOptionsForDaysOfMonthKeyboard()
     return ReplyKeyboardMarkup(options, one_time_keyboard=True)
+
+def confirmKeyboard():
+    options = [['Да'],['Отмена']]
+    return ReplyKeyboardMarkup(options, one_time_keyboard=True)
+
+#########################Keyboards############################
 
 def getOptionsForDaysOfMonthKeyboard():
     options = []
