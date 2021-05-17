@@ -41,11 +41,11 @@ class UserTelegram:
 
 
 class Card:
-    def __init__(self):
+    def __init__(self, keeper):
         self.date = None
         self.amount = None
         self.description = None
-        self.keeper = None
+        self.keeper = keeper
         self.confirmCreate = None
 
 usersTelegram = {}
@@ -84,13 +84,13 @@ def echoForExistUser(update,context):
     message = update.message.text.lower()
     userId = update._effective_user.id
     user = usersTelegram[userId]
+    userContactId = user.contact['records'][0]['Id']
     if message == 'текущий баланс':
-        userContactId = user.contact['records'][0]['Id']
         balance = sf.apexecute('Contact/'+userContactId, method='GET')
         update.message.reply_text(str(balance),
                             reply_markup=mainMenuKeyboard())
     elif message == 'создать карточку':
-        user.card = Card()
+        user.card = Card(userContactId)
         update.message.reply_text('На какой день желаете создать карточку?',
                             reply_markup=createCardKeyboard())
     elif message == 'отмена':
@@ -164,14 +164,18 @@ def confirmCreateCard(update,user,message):
         update.message.reply_text('Вы уверены что хотите создать следующую карточку?')
         update.message.reply_text('Дата: ' + str(user.card.date)[:-9])
         update.message.reply_text('Сумма: ' + str(user.card.amount))
-        update.message.reply_text('Описание: ' + str(user.card.description), reply_markup=confirmKeyboard())
+        update.message.reply_text('Описание: ' + user.card.description, reply_markup=confirmKeyboard())
         user.card.confirmCreate = True
     elif user.card.confirmCreate == True:
         createCardInSalesforce(update,user)
         user.card = None
 
 def createCardInSalesforce(update,user):
-    ''
+    try:
+        something = sf.Expense_Card__c.create({'CardDate__c': str(user.card.date),'Amount__c':str(user.card.amount),'Description__c':user.card.description,'CardKeeper__c':user.card.keeper})
+        update.message.reply_text('Карточка успешно создана!' + str(something))
+    except Exception as e:
+        update.message.reply_text('Извините, карточку не получилось создать' + str(e))
 
 def getDateFromString(update,message):
     dateStr = ''
