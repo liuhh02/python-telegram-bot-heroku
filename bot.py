@@ -139,7 +139,7 @@ def getDateFromString(update,message):
             update.message.reply_text(str(dateObject),
                                 reply_markup=ReplyKeyboardRemove())
         else:
-            dateStr = message
+            dateStr = message + ' 00:00:00'
             dateObject = datetime.datetime.strptime(dateStr, '%Y-%m-%d %H:%M:%S')
             update.message.reply_text(str(dateObject),
                                 reply_markup=ReplyKeyboardRemove())
