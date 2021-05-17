@@ -133,12 +133,15 @@ def creatingCardDecription(update,user,message):
     ''
 
 def getDateFromString(update,message):
-    if len(message) < 3:
-        now = datetime.datetime.now()
-        dateStr = str(now.year)+'-'+str(now.month)+'-'+message
-        dateObject = datetime.strptime(dateStr, '%Y-%m-%d').date()
-        update.message.reply_text(str(dateObject),
-                            reply_markup=ReplyKeyboardRemove())
+    try:
+        if len(message) < 3:
+            now = datetime.datetime.now()
+            dateStr = str(now.year)+'-'+str(now.month)+'-'+message
+            dateObject = datetime.strptime(dateStr, '%Y-%m-%d').date()
+            update.message.reply_text(str(dateObject),
+                                reply_markup=ReplyKeyboardRemove())
+    except Exception:
+        update.message.reply_text(str(Exception))
 
 def error(update, context):
     """Log Errors caused by Updates."""
