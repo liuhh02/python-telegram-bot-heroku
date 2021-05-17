@@ -151,7 +151,7 @@ def creatingCardDate(update,user,message):
         creatingCardDateNone(update,user,message)
     elif user.card.date == True:
         try:
-            cardDate = getDateFromString(update,message)
+            cardDate = getStringAsDateAndValidate(message)
             user.card.date = cardDate
             creatingCardAmount(update,user,message)
         except Exception as e:
@@ -161,9 +161,10 @@ def creatingCardDate(update,user,message):
 
 def creatingCardDateNone(update,user,message):
     if message == 'сегодня':
-        user.card.date = datetime.datetime.today()
+        today = datetime.datetime.today()
+        user.card.date = getStringAsDateAndValidate(today.day)
         creatingCardAmount(update,user,message)
-        
+
     elif message == 'календарь':
         update.message.reply_text('Выберите число')
         replyMessage = """Или Введите дату вручную(день-месяц-число)
@@ -198,7 +199,7 @@ def creatingCardDecription(update,user,message):
 def confirmCreateCard(update,user,message):
     if user.card.confirmCreate == None:
         update.message.reply_text('Вы уверены что хотите создать следующую карточку?')
-        update.message.reply_text('Дата: ' + str(user.card.date)[:-9])
+        update.message.reply_text('Дата: ' + str(user.card.date))
         update.message.reply_text('Сумма: ' + str(user.card.amount))
         update.message.reply_text('Описание: ' + user.card.description, reply_markup=confirmKeyboard())
         user.card.confirmCreate = True
@@ -208,7 +209,7 @@ def confirmCreateCard(update,user,message):
 
 def createCardInSalesforce(update,user):
     try:
-        something = sf.Expense_Card__c.create({'CardDate__c': str(user.card.date)[:-9],'Amount__c':str(user.card.amount),'Description__c':user.card.description,'CardKeeper__c':user.card.keeper})
+        something = sf.Expense_Card__c.create({'CardDate__c': user.card.date,'Amount__c':str(user.card.amount),'Description__c':user.card.description,'CardKeeper__c':user.card.keeper})
         user.card = None
         update.message.reply_text('Карточка успешно создана!', reply_markup=mainMenuKeyboard())
     except Exception as e:
@@ -264,16 +265,17 @@ def getOptionsForDaysOfMonthKeyboard():
         count += 1
     return options
 
-def getDateFromString(update,message):
-    dateStr = ''
+def getStringAsDateAndValidate(message):
+    dateStrResult = ''
     if len(message) < 3:
         now = datetime.datetime.now()
-        dateStr = str(now.year)+'-'+str(now.month)+'-'+message + ' 00:00:00'
+        dateStr = str(now.year)+'-'+str(now.month)+'-'+message
     else:
-        dateStr = message + ' 00:00:00'
+        dateStr = message
     
-    dateObject = datetime.datetime.strptime(dateStr, '%Y-%m-%d %H:%M:%S')
-    return dateObject
+    dateStrForValidate = dateStrResult + ' 00:00:00'
+    dateObject = datetime.datetime.strptime(dateStrForValidate, '%Y-%m-%d %H:%M:%S')
+    return dateStrResult
 
 def createUserIfItNeed(userId):
      if userId not in usersTelegram:
