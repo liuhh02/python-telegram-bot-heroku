@@ -138,7 +138,7 @@ def getDateFromString(update,message):
             # now = datetime.datetime.now()
             # dateStr = str(now.year)+'-'+str(now.month)+'-'+message
             # dateObject = datetime.strptime(dateStr, '%Y-%m-%d').date()
-            date_time_str = '2018-06-29 08:15:27.243860'
+            date_time_str = '2018-6-29 08:15:27.243860'
             date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')
             update.message.reply_text(str(date_time_obj),
                                 reply_markup=ReplyKeyboardRemove())
