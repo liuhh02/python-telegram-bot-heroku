@@ -1,6 +1,5 @@
 import logging
 import calendar
-from datetime import datetime
 import datetime
 from telegram import ReplyKeyboardMarkup, Update, ReplyKeyboardRemove
 from telegram.ext import (
@@ -136,10 +135,12 @@ def creatingCardDecription(update,user,message):
 def getDateFromString(update,message):
     try:
         if len(message) < 3:
-            now = datetime.datetime.now()
-            dateStr = str(now.year)+'-'+str(now.month)+'-'+message
-            dateObject = datetime.strptime(dateStr, '%Y-%m-%d').date()
-            update.message.reply_text(str(dateObject),
+            # now = datetime.datetime.now()
+            # dateStr = str(now.year)+'-'+str(now.month)+'-'+message
+            # dateObject = datetime.strptime(dateStr, '%Y-%m-%d').date()
+            date_time_str = '2018-06-29 08:15:27.243860'
+            date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')
+            update.message.reply_text(str(date_time_obj),
                                 reply_markup=ReplyKeyboardRemove())
     except Exception as e:
         update.message.reply_text(str(e))
