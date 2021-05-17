@@ -204,9 +204,9 @@ def start(update, context):
     createUserIfItNeed(userId)
     isUserLog = usersTelegram[userId].exist
     if isUserLog:
-        update.message.reply_text('Вы уже зарегистрированы!')
+        update.message.reply_text('Вы уже зарегистрированы!', reply_markup=ReplyKeyboardRemove())
     else:
-        update.message.reply_text('Введите логин')
+        update.message.reply_text('Введите логин', reply_markup=ReplyKeyboardRemove())
     # sf.Contact.create({'LastName':'simple_salesforce','Email':'example@example.com'})
 
 def echo(update, context):
@@ -256,6 +256,8 @@ def error(update, context):
 def end(update, context):
     userId = update._effective_user.id
     usersTelegram.pop(userId)
+    update.message.reply_text('До свидания!',
+                            reply_markup=mainMenuKeyboard())
 
 def login(update, context):
     userId = update._effective_user.id
