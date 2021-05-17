@@ -175,11 +175,10 @@ def getOptionsForDaysOfMonthKeyboard():
     rowOptions = []
     now = datetime.datetime.now()
     daysInMonth = calendar.monthrange(now.year, now.month)[1]
-    options.append(rowOptions)
     count = 1
     while count <= daysInMonth:
         strCount = str(count)
-        if len(rowOptions) >= 4:
+        if len(rowOptions) >= 4 or count == daysInMonth:
             rowOptions.append(strCount)
             options.append(rowOptions)
             rowOptions = []
