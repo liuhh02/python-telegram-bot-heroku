@@ -156,13 +156,13 @@ def creatingCardDecription(update,user,message):
         update.message.reply_text('Введите описание')
         user.card.description = True
     elif user.card.description == True:
-        user.card.description = str(message)
+        user.card.description = update.message.text
         confirmCreateCard(update,user,message)
 
 def confirmCreateCard(update,user,message):
     if user.card.confirmCreate == None:
         update.message.reply_text('Вы уверены что хотите создать следующую карточку?')
-        update.message.reply_text('Дата: ' + str(user.card.date))
+        update.message.reply_text('Дата: ' + str(user.card.date.date))
         update.message.reply_text('Сумма: ' + str(user.card.amount))
         update.message.reply_text('Описание: ' + str(user.card.description), reply_markup=confirmKeyboard())
         user.card.confirmCreate = True
