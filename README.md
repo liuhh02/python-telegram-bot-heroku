@@ -1,1 +1,1 @@
-telegram bot nickname: @expenses_salesforce_bot
+telegram bot: https://t.me/expenses_salesforce_bot
