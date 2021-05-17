@@ -136,7 +136,8 @@ def getDateFromString(update,message):
     if len(message) < 3:
         now = datetime.datetime.now()
         dateStr = str(now.year)+'-'+str(now.month)+'-'+message
-        update.message.reply_text(dateStr,
+        dateObject = datetime.strptime(dateStr, '%Y-%m-%d').date()
+        update.message.reply_text(str(dateObject),
                             reply_markup=ReplyKeyboardRemove())
 
 def error(update, context):
