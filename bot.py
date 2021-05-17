@@ -106,11 +106,17 @@ def creatingCardDate(update,user,message):
     if user.card.date == None:
         creatingCardDateNone(update,user,message)
     elif user.card.date == True:
-        getDateFromString(update,message)
+        try:
+            cardDate = getDateFromString(update,message)
+            user.card.date = cardDate
+        except Exception as e:
+            update.message.reply_text('Кажется вы неправильно ввели дату. Попробуйте еще раз или обратитесь к администратору. Пример: 2021-03-31')
+            #update.message.reply_text(str(e))
 
 def creatingCardDateNone(update,user,message):
     if message == 'сегодня':
         'here should be code'
+        user.card.date = True
     elif message == 'календарь':
         update.message.reply_text('Выберите число')
         replyMessage = """Или Введите дату вручную(день-месяц-число)
@@ -119,10 +125,11 @@ def creatingCardDateNone(update,user,message):
         """
         update.message.reply_text(replyMessage,
                             reply_markup=daysOfMonthKeyboard())
+        user.card.date = True
     elif message == 'отмена':
+        user.card = None
         update.message.reply_text('Что вы хотите сделать?',
                             reply_markup=mainMenuKeyboard())
-    user.card.date = True
 
 def creatingCardAmount(update,user,message):
     ''
@@ -130,20 +137,16 @@ def creatingCardDecription(update,user,message):
     ''
 
 def getDateFromString(update,message):
-    try:
-        dateStr = ''
-        if len(message) < 3:
-            now = datetime.datetime.now()
-            dateStr = str(now.year)+'-'+str(now.month)+'-'+message + ' 00:00:00'
-        else:
-            dateStr = message + ' 00:00:00'
-        
-        dateObject = datetime.datetime.strptime(dateStr, '%Y-%m-%d %H:%M:%S')
-        return dateObject.date
-    except Exception as e:
-        update.message.reply_text('Кажется вы неправильно ввели дату. Попробуйте еще раз или обратитесь к администратору')
-        return None
-        #update.message.reply_text(str(e))
+    dateStr = ''
+    if len(message) < 3:
+        now = datetime.datetime.now()
+        dateStr = str(now.year)+'-'+str(now.month)+'-'+message + ' 00:00:00'
+    else:
+        dateStr = message + ' 00:00:00'
+    
+    dateObject = datetime.datetime.strptime(dateStr, '%Y-%m-%d %H:%M:%S')
+    return dateObject.date
+
 
 def error(update, context):
     """Log Errors caused by Updates."""
