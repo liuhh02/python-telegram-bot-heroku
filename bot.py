@@ -178,11 +178,19 @@ TOKEN = '1841783209:AAHrDitzlrEGtxSyCUgRr2oSl-vQsgBzPK8'
 bot = ''
 
 class UserTelegram:
-    def __init__(self, login, password):
-        self.login = login
-        self.password = password
+    def __init__(self):
+        self.login = None
+        self.password = None
         self.exist = False
         self.contact = None
+        self.newCard = None
+
+class Card:
+    def __init__(self):
+        self.date = None
+        self.amount = None
+        self.description = None
+        self.keeper = None
 
 usersTelegram = {}
 
@@ -279,7 +287,7 @@ def createCardKeyboard():
 
 def createUserIfItNeed(userId):
      if userId not in usersTelegram:
-        usersTelegram[userId] = UserTelegram(None,None)
+        usersTelegram[userId] = UserTelegram()
 
 def refreshUser(user):
     user.login = None
