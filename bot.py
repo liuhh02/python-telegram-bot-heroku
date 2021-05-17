@@ -274,7 +274,7 @@ def login(update, context):
             user.contact = sf.query(f"SELECT Id, Name, Email, Office__c, Admin__c FROM Contact WHERE Email ='{user.login}' AND Password__c ='{user.password}' LIMIT 1")
             throwExceptionIfContactEmpty(user.contact)        
             user.exist = True
-            update.message.reply_text('Авторизация прошла успешно ' + user.contact,
+            update.message.reply_text('Авторизация прошла успешно ' + str(user.contact),
                             reply_markup=mainMenuKeyboard())
         except Exception:
             update.message.reply_text('Неправильный логин или пароль.Попробуйте Снова')
