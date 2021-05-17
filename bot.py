@@ -107,9 +107,9 @@ def creatingCard(update,user,message):
         creatingCardAmount(update,user,message)
     elif user.card.description == None or user.card.description == True:
         creatingCardDecription(update,user,message)
-
-    if isinstance(user.card.description,str):
-        ''
+    elif isinstance(user.card.description,str):
+        confirmCreateCard(update,user,message)
+        
 
 def creatingCardDate(update,user,message):
     if user.card.date == None:
@@ -157,6 +157,7 @@ def creatingCardDecription(update,user,message):
         user.card.description = True
     elif user.card.description == True:
         user.card.description = str(message)
+        confirmCreateCard(update,user,message)
 
 def confirmCreateCard(update,user,message):
     if user.card.confirmCreate == None:
