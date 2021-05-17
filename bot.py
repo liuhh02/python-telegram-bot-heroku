@@ -157,7 +157,7 @@ def mainMenuKeyboard():
     return ReplyKeyboardMarkup(options)
 
 def createCardKeyboard():
-    options = [['Сегодня','Календарь'],['Отмена']]
+    options = [['Сегодня'],['Календарь'],['Отмена']]
     return ReplyKeyboardMarkup(options, one_time_keyboard=True)
 
 
