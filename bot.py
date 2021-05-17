@@ -135,16 +135,15 @@ def getDateFromString(update,message):
         if len(message) < 3:
             now = datetime.datetime.now()
             dateStr = str(now.year)+'-'+str(now.month)+'-'+message + ' 00:00:00'
-            dateObject = datetime.datetime.strptime(dateStr, '%Y-%m-%d %H:%M:%S')
-            update.message.reply_text(str(dateObject),
-                                reply_markup=ReplyKeyboardRemove())
         else:
             dateStr = message + ' 00:00:00'
-            dateObject = datetime.datetime.strptime(dateStr, '%Y-%m-%d %H:%M:%S')
-            update.message.reply_text(str(dateObject),
-                                reply_markup=ReplyKeyboardRemove())
+        
+        dateObject = datetime.datetime.strptime(dateStr, '%Y-%m-%d %H:%M:%S')
+        return dateObject.date
     except Exception as e:
-        update.message.reply_text(str(e))
+        update.message.reply_text('Кажется вы неправильно ввели дату. Попробуйте еще раз или обратитесь к администратору')
+        return None
+        #update.message.reply_text(str(e))
 
 def error(update, context):
     """Log Errors caused by Updates."""
