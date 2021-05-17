@@ -125,7 +125,7 @@ def creatingCardDateNone(update,user,message):
     elif message == 'отмена':
         update.message.reply_text('Что вы хотите сделать?',
                             reply_markup=mainMenuKeyboard())
-    user.card.date == True
+    user.card.date = True
 
 def creatingCardAmount(update,user,message):
     ''
