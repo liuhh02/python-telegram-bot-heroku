@@ -113,6 +113,7 @@ def creatingCardDate(update,user,message):
         try:
             cardDate = getDateFromString(update,message)
             user.card.date = cardDate
+            creatingCardAmount(update,user,message)
         except Exception as e:
             update.message.reply_text('Кажется вы неправильно ввели дату. Попробуйте еще раз или обратитесь к администратору. Пример: 2021-03-31',
                                 reply_markup=cancelKeyboard())
@@ -138,7 +139,8 @@ def creatingCardAmount(update,user,message):
     elif user.card.date == True:
         try:
             cardAmount = float(message)
-            user.card.amount = cardAmount
+            update.message.reply_text(cardAmount)
+            #user.card.amount = cardAmount
         except Exception as e:
             update.message.reply_text('Кажется вы неправильно ввели сумму. Попробуйте еще раз или обратитесь к администратору. Пример: 5.014',
                     reply_markup=cancelKeyboard())
