@@ -227,14 +227,16 @@ def echo(update, context):
 def echoForExistUser(update,context):
     message = update.message.text.lower()
     userId = update._effective_user.id
+    user = usersTelegram[userId]
     if message == 'текущий баланс':
+        balance = sf.apexecute('Contact/', method='GET')
         update.message.reply_text('101',
                             reply_markup=mainMenuKeyboard())
     elif message == 'создать карточку':
-        usersTelegram[userId].card = Card()
+        user.card = Card()
         update.message.reply_text('На какой день желаете создать карточку?',
                             reply_markup=createCardKeyboard())
-    elif usersTelegram[userId] != None:
+    elif user.card != None:
         creatingCard(update, context)
     
     update.message.reply_text('ты не должен видеть это сообщение')
@@ -272,7 +274,7 @@ def login(update, context):
             user.contact = sf.query(f"SELECT Id, Name, Email, Office__c, Admin__c FROM Contact WHERE Email ='{user.login}' AND Password__c ='{user.password}' LIMIT 1")
             throwExceptionIfContactEmpty(user.contact)        
             user.exist = True
-            update.message.reply_text('Авторизация прошла успешно',
+            update.message.reply_text('Авторизация прошла успешно ' + user.contact,
                             reply_markup=mainMenuKeyboard())
         except Exception:
             update.message.reply_text('Неправильный логин или пароль.Попробуйте Снова')
