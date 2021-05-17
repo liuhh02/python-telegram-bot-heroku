@@ -95,14 +95,20 @@ def echoForExistUser(update,context):
     update.message.reply_text('ты не должен видеть это сообщение')
 
 def creatingCard(update,user,message):
-    if user.card.date == None:
+    if user.card.date == None or user.card.date == True:
         creatingCardDate(update,user,message)
-    elif user.card.amount == None:
+    elif user.card.amount == None or user.card.amount == True:
         creatingCardAmount(update,user,message)
-    elif user.card.description == None:
+    elif user.card.description == None or user.card.description == True:
         creatingCardDecription(update,user,message)
 
 def creatingCardDate(update,user,message):
+    if user.card.date == None:
+        creatingCardDateNone(update,user,message)
+    elif user.card.date == True:
+        getDateFromString(update,message)
+
+def creatingCardDateNone(update,user,message):
     if message == 'сегодня':
         'here should be code'
     elif message == 'календарь':
@@ -116,11 +122,19 @@ def creatingCardDate(update,user,message):
     elif message == 'отмена':
         update.message.reply_text('Что вы хотите сделать?',
                             reply_markup=mainMenuKeyboard())
+    user.card.date == True
 
 def creatingCardAmount(update,user,message):
     ''
 def creatingCardDecription(update,user,message):
     ''
+
+def getDateFromString(update,message):
+    if len(message) < 3:
+        now = datetime.datetime.now()
+        dateStr = str(now.year)+'-'+str(now.month)+'-'+message
+        update.message.reply_text(dateStr,
+                            reply_markup=ReplyKeyboardRemove())
 
 def error(update, context):
     """Log Errors caused by Updates."""
