@@ -104,7 +104,7 @@ def creatingCard(update,user,message):
         creatingCardDecription(update,user,message)
 
 def creatingCardDate(update,user,message):
-    update.message.reply_text('creatingCardDate')
+    update.message.reply_text('creatingCardDate ' + str(user.card.date))
     if user.card.date == None:
         creatingCardDateNone(update,user,message)
     elif user.card.date == True:
