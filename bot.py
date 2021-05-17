@@ -226,22 +226,28 @@ def echo(update, context):
 
 def echoForExistUser(update,context):
     message = update.message.text.lower()
+    userId = update._effective_user.id
     if message == 'текущий баланс':
-        'here should be code'
-        update.message.reply_text('101')
+        update.message.reply_text('101',
+                            reply_markup=mainMenuKeyboard())
     elif message == 'создать карточку':
-        reply_keyboard = createCardKeyboard()
+        usersTelegram[userId].card = Card()
         update.message.reply_text('На какой день желаете создать карточку?',
-                            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
-    elif message == 'сегодня':
+                            reply_markup=createCardKeyboard())
+    elif usersTelegram[userId] != None:
+        creatingCard(update, context)
+    
+    update.message.reply_text('ты не должен видеть это сообщение')
+
+def creatingCard(update, context):
+    message = update.message.text.lower()
+    if message == 'сегодня':
         'here should be code'
     elif message == 'календарь':
         'here should be code'
     elif message == 'отмена':
-        reply_keyboard = mainMenuKeyboard()
         update.message.reply_text('Что вы хотите сделать?',
-                            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
-    update.message.reply_text('ты не должен видеть это сообщение')
+                            reply_markup=mainMenuKeyboard())
 
 def error(update, context):
     """Log Errors caused by Updates."""
@@ -264,9 +270,8 @@ def login(update, context):
             user.contact = sf.query(f"SELECT Id, Name, Email, Office__c, Admin__c FROM Contact WHERE Email ='{user.login}' AND Password__c ='{user.password}' LIMIT 1")
             throwExceptionIfContactEmpty(user.contact)        
             user.exist = True
-            reply_keyboard = mainMenuKeyboard()
             update.message.reply_text('Авторизация прошла успешно',
-                            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+                            reply_markup=mainMenuKeyboard())
         except Exception:
             update.message.reply_text('Неправильный логин или пароль.Попробуйте Снова')
             refreshUser(user)
@@ -280,10 +285,13 @@ def login(update, context):
 
 #########################Keyboards############################
 def mainMenuKeyboard():
-    return [['Текущий баланс', 'Создать карточку']]
+    options = [['Текущий баланс', 'Создать карточку']]
+    return ReplyKeyboardMarkup(options, one_time_keyboard=True)
 
 def createCardKeyboard():
-    return [['Сегодня','Календарь','Отмена']]
+    options = [['Сегодня','Календарь','Отмена']]
+    return ReplyKeyboardMarkup(options, one_time_keyboard=True)
+
 
 def createUserIfItNeed(userId):
      if userId not in usersTelegram:
