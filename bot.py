@@ -106,6 +106,7 @@ def creatingCardDate(update,user,message):
     if user.card.date == None:
         creatingCardDateNone(update,user,message)
     elif user.card.date == True:
+        update.message.reply_text('hello')
         getDateFromString(update,message)
 
 def creatingCardDateNone(update,user,message):
