@@ -109,10 +109,10 @@ def creatingCardDate(update,user,message):
         now = datetime.datetime.now()
         daysInMonth = calendar.monthrange(now.year, now.month)[1]
         strDays = str(daysInMonth)
-        replyMessage = """Выберите число
-        или  Введите дату вручную(день-месяц-число)
-        Пример:
-        2021-03-31
+        replyMessage = """Выберите число 
+или  Введите дату вручную(день-месяц-число)
+Пример:
+2021-03-31
         """
         update.message.reply_text(replyMessage,
                             reply_markup=daysOfMonthKeyboard())
