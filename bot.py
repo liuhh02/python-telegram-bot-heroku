@@ -153,7 +153,7 @@ def login(update, context):
 
 #########################Keyboards############################
 def mainMenuKeyboard():
-    options = [['Текущий баланс', 'Создать карточку']]
+    options = [['Текущий баланс'],['Создать карточку']]
     return ReplyKeyboardMarkup(options)
 
 def createCardKeyboard():
