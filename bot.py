@@ -172,7 +172,7 @@ def confirmCreateCard(update,user,message):
 
 def createCardInSalesforce(update,user):
     try:
-        something = sf.Expense_Card__c.create({'CardDate__c': str(user.card.date),'Amount__c':str(user.card.amount),'Description__c':user.card.description,'CardKeeper__c':user.card.keeper})
+        something = sf.Expense_Card__c.create({'CardDate__c': str(user.card.date)[:-9],'Amount__c':str(user.card.amount),'Description__c':user.card.description,'CardKeeper__c':user.card.keeper})
         update.message.reply_text('Карточка успешно создана!' + str(something))
     except Exception as e:
         update.message.reply_text('Извините, карточку не получилось создать' + str(e))
