@@ -1,1 +1,2 @@
 python-telegram-bot==12.7
+simple_salesforce==1.11.1
